@@ -24,12 +24,16 @@ def train():
     X_train, X_test, y_train, y_test = get_train_test_split_data(DATA_PATH)
 
     # 2. Setup MLflow
-    # Insert your code here
+    mlflow.set_experiment(EXPERIMENT_NAME)
  
     
     # Enable Autologging (disable system metrics for cleaner output)
     # This captures params, metrics, model artifacts, and system metrics automatically
-    # Insert your code here
+    mlflow.sklearn.autolog(log_model_signatures=True, log_input_examples=True, silent=True)
+    with mlflow.start_run(run_name="Model_Training"):
+        print("Starting training run...")
+        rf = RandomForestClassifier(n_estimators=N_ESTIMATORS, max_depth=MAX_DEPTH, random_state=42)
+        rf.fit(X_train, y_train)
 
 
 if __name__ == "__main__":
